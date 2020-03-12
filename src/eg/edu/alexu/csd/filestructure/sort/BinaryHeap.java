@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     private List<INode<T>> nodes;
@@ -19,7 +20,6 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         {
             return null;
         }
-
         return nodes.get(0);
     }
 
@@ -93,6 +93,17 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         {
             this.heapify(this.nodes.get(i));
         }
+    }
+
+    @Override
+    public IHeap<T> clone()
+    {
+        try {
+            return (IHeap<T>) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void shiftUp(INode<T> node)
