@@ -70,11 +70,15 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         shiftUp(node);
     }
 
-
-
     @Override
-    public void build(Collection unordered) {
-        for (int i = nodes.size() - 1; i >= 0; i--)
+    public void build(Collection<T> unordered) {
+        for (T t : unordered)
+        {
+            INode<T> node = new NodeImp<>(nodes, nodes.size(), t);
+            nodes.add(node);
+        }
+
+        for (int i = (nodes.size() / 2) - 1; i >= 0; i--)
         {
             this.heapify(this.nodes.get(i));
         }

@@ -18,7 +18,7 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         {
             throw new IllegalArgumentException("null array");
         }
-        else if (index < 0 || index >= heapList.size())
+        else if (index < 0)
         {
             throw new IllegalArgumentException("invalid index");
         }
