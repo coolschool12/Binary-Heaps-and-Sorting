@@ -14,7 +14,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     }
 
     @Override
-    public INode getRoot() {
+    public INode<T> getRoot() {
         return null;
     }
 
