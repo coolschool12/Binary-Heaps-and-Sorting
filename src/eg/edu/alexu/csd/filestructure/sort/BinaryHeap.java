@@ -31,12 +31,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     @Override
     public void heapify(INode<T> node) {
 
-        if (node == null)
-        {
-            return;
-        }
-
-        if (node.getLeftChild() != null || node.getRightChild() != null)
+        if (node != null && (node.getLeftChild() != null || node.getRightChild() != null))
         {
             INode<T> child = shiftTest(node.getLeftChild(), node.getRightChild()) ? node.getLeftChild() : node.getRightChild();
 
@@ -74,8 +69,8 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public void insert(T element) {
-        if (element == null)
-        {
+
+        if (element == null) {
             return;
         }
 
@@ -107,7 +102,9 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     public IHeap<T> clone()
     {
         try {
-            return (IHeap<T>) super.clone();
+            IHeap<T> cloned = (IHeap<T>) super.clone();
+            this.nodes = new ArrayList<>(nodes);
+            return cloned;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
