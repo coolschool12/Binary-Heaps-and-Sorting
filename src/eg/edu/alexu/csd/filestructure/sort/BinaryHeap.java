@@ -32,7 +32,9 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     public void heapify(INode<T> node) {
 
         if (node == null)
-            throw new NullPointerException("There's no node to heapify the heap!!");
+        {
+            return;
+        }
 
         if (node.getLeftChild() != null || node.getRightChild() != null)
         {
@@ -53,24 +55,30 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         {
             return null;
         }
-
-        INode<T> extracted = nodes.remove(0);
-
-        // Move last node to first position
-        if (nodes.size() != 0)
+        // One node
+        else if (nodes.size() == 1)
         {
-            INode<T> node = nodes.remove(nodes.size() - 1);
-            INode<T> newNode = new NodeImp<>(nodes, 0, node.getValue());
-
-            this.nodes.add(0, newNode);
-            this.heapify(newNode);
+            return nodes.remove(0).getValue();
         }
 
-        return extracted.getValue();
+        T extracted = nodes.get(0).getValue();
+
+        // Move last node to first position
+        INode<T> node = nodes.remove(nodes.size() - 1);
+        this.nodes.get(0).setValue(node.getValue());
+
+        this.heapify(this.nodes.get(0));
+
+        return extracted;
     }
 
     @Override
     public void insert(T element) {
+        if (element == null)
+        {
+            return;
+        }
+
         INode<T> node = new NodeImp<>(nodes, nodes.size(), element);
         nodes.add(node);
         shiftUp(node);

@@ -66,14 +66,12 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
      */
     @Override
     public INode<T> getParent() {
-        int parentIndex = (this.index - 1) / 2;
-
-        if (parentIndex < 0)
+        if (this.index == 0)
         {
             return null;
         }
 
-        return this.heapList.get(parentIndex);
+        return this.heapList.get((this.index - 1) / 2);
     }
 
     /**
