@@ -31,7 +31,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
         if (node.getLeftChild() != null || node.getRightChild() != null)
         {
-            INode child = shiftTest(node.getLeftChild(), node.getRightChild()) ? node.getLeftChild() : node.getRightChild();
+            INode<T> child = shiftTest(node.getLeftChild(), node.getRightChild()) ? node.getLeftChild() : node.getRightChild();
 
             if (child.getValue().compareTo(node.getValue()) > 0)
             {
@@ -72,5 +72,4 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         fNode.setValue(nNode.getValue());
         nNode.setValue(comparable);
     }
-
 }
