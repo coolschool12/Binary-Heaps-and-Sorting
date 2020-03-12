@@ -57,8 +57,14 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         INode<T> extracted = nodes.remove(0);
 
         // Move last node to first position
-        this.nodes.add(0, nodes.remove(nodes.size() - 1));
-        this.heapify(nodes.get(0));
+        if (nodes.size() != 0)
+        {
+            INode<T> node = nodes.remove(nodes.size() - 1);
+            INode<T> newNode = new NodeImp<>(nodes, 0, node.getValue());
+
+            this.nodes.add(0, newNode);
+            this.heapify(newNode);
+        }
 
         return extracted.getValue();
     }
@@ -72,6 +78,11 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public void build(Collection<T> unordered) {
+        if (unordered == null)
+        {
+            return;
+        }
+
         for (T t : unordered)
         {
             INode<T> node = new NodeImp<>(nodes, nodes.size(), t);
