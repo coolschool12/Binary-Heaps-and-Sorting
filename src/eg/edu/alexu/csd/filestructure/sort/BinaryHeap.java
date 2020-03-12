@@ -35,7 +35,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
             if (child.getValue().compareTo(node.getValue()) > 0)
             {
-                shift(child, node);
+                swap(child, node);
                 heapify(child);
             }
         }
@@ -48,13 +48,28 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public void insert(T element) {
-        //INode<T> node = new NodeImp<T>(nodes, nodes.size(), element);
-
+        INode<T> node = new NodeImp<>(nodes, nodes.size(), element);
+        nodes.add(node);
+        shiftUp(node);
     }
+
+
 
     @Override
     public void build(Collection unordered) {
 
+    }
+
+    private void shiftUp(INode<T> node)
+    {
+        if (node.getParent() == null)
+            return;
+
+        if (shiftTest(node, node.getParent()))
+        {
+            swap(node, node.getParent());
+            shiftUp(node.getParent());
+        }
     }
 
     private boolean shiftTest(INode<T> fNode, INode<T> nNode)
@@ -66,7 +81,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         return fNode.getValue().compareTo(nNode.getValue()) > 0;
     }
 
-    private void shift(INode<T> fNode, INode<T> nNode)
+    private void swap(INode<T> fNode, INode<T> nNode)
     {
         T comparable = fNode.getValue();
         fNode.setValue(nNode.getValue());
