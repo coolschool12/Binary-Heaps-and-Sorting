@@ -116,6 +116,43 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         this.nodes.add(node);
     }
 
+    public void heapSort() {
+        int size = this.nodes.size();
+
+        for (int i = 0, staticSize = size; i < staticSize; i++)
+        {
+//            INode<T> node = new NodeImp<>(this.nodes, size - 1 - i, this.extract());
+//            this.nodes.add(node);
+
+            this.swap(nodes.get(size - 1 - i), nodes.get(0));
+            this.heapify(this.nodes.get(0), 0, size--);
+        }
+    }
+
+    private void heapify(INode<T> node, int index, int size) {
+        if (index < size / 2)
+        {
+            INode<T> child;
+
+            if (shiftTest(node.getLeftChild(), node.getRightChild()))
+            {
+                child = node.getLeftChild();
+                index = (2 * index) + 1;
+            }
+            else
+            {
+                child = node.getRightChild();
+                index = (2 * index) + 2;
+            }
+
+            if (child.getValue().compareTo(node.getValue()) > 0)
+            {
+                swap(child, node);
+                this.heapify(child, index, size);
+            }
+        }
+    }
+
     private void shiftUp(INode<T> node)
     {
         if (node.getParent() == null)

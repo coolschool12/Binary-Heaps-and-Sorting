@@ -9,6 +9,12 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
 
         BinaryHeap<T> binaryHeap = new BinaryHeap<>();
         binaryHeap.build(unordered);
+        binaryHeap.heapSort();
+
+        return binaryHeap;
+        /*
+        BinaryHeap<T> binaryHeap = new BinaryHeap<>();
+        binaryHeap.build(unordered);
         //IHeap<T> cloned = binaryHeap.clone();
 
         if (unordered == null || unordered.size() == 0)
@@ -25,6 +31,7 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
         }
 
         return binaryHeap;
+         */
     }
 
     @Override
