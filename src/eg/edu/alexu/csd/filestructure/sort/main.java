@@ -15,6 +15,6 @@ public class main {
         arr.add(4);
         arr.add(5);
         binaryHeap.build(arr);
-        binaryHeap.getRoot();
+        binaryHeap.heapSort();
     }
 }

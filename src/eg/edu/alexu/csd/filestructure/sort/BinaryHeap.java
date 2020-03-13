@@ -124,8 +124,8 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 //            INode<T> node = new NodeImp<>(this.nodes, size - 1 - i, this.extract());
 //            this.nodes.add(node);
 
-            this.swap(nodes.get(size - 1 - i), nodes.get(0));
-            this.heapify(this.nodes.get(0), 0, size--);
+            this.swap(nodes.get(size - 1), nodes.get(0));
+            this.heapify(this.nodes.get(0), 0, --size);
         }
     }
 
@@ -133,17 +133,19 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         if (index < size / 2)
         {
             INode<T> child;
-
-            if (shiftTest(node.getLeftChild(), node.getRightChild()))
+            boolean test = shiftTest(node.getLeftChild(), node.getRightChild());
+            if (test && (2 * index) + 1 < size)
             {
                 child = node.getLeftChild();
                 index = (2 * index) + 1;
             }
-            else
+            else if (!test && (2 * index) + 2 < size)
             {
                 child = node.getRightChild();
                 index = (2 * index) + 2;
             }
+            else
+                return;
 
             if (child.getValue().compareTo(node.getValue()) > 0)
             {
