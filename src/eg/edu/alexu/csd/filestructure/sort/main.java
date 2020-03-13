@@ -8,12 +8,12 @@ public class main {
     {
         BinaryHeap<Integer> binaryHeap = new BinaryHeap<>();
         ArrayList<Integer> arr = new ArrayList<>();
-        arr.add(0);
-        arr.add(1);
+        arr.add(29);
+        arr.add(115);
         arr.add(2);
-        arr.add(3);
-        arr.add(4);
-        arr.add(5);
+        arr.add(53);
+        arr.add(26);
+        arr.add(20);
         binaryHeap.build(arr);
         binaryHeap.heapSort();
     }

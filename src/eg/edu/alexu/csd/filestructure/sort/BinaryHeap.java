@@ -133,13 +133,13 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         if (index < size / 2)
         {
             INode<T> child;
-            boolean test = shiftTest(node.getLeftChild(), node.getRightChild());
+            boolean test = shiftTest(node.getLeftChild(), node.getRightChild(), (2 * index) + 1, (2 * index) + 2, size);
             if (test && (2 * index) + 1 < size)
             {
                 child = node.getLeftChild();
                 index = (2 * index) + 1;
             }
-            else if (!test && (2 * index) + 2 < size)
+            else if ((2 * index) + 2 < size)
             {
                 child = node.getRightChild();
                 index = (2 * index) + 2;
@@ -165,6 +165,15 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
             swap(node, node.getParent());
             shiftUp(node.getParent());
         }
+    }
+
+    private boolean shiftTest(INode<T> fNode, INode<T> nNode, int ind1, int ind2, int size)
+    {
+        if (fNode == null || ind1 >= size)
+            return false;
+        else if (nNode == null || ind2 >= size)
+            return true;
+        return fNode.getValue().compareTo(nNode.getValue()) > 0;
     }
 
     private boolean shiftTest(INode<T> fNode, INode<T> nNode)
