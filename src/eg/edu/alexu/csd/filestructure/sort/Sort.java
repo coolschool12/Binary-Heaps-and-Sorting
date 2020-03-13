@@ -10,9 +10,9 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
     @Override
     public IHeap<T> heapSort(ArrayList<T> unordered) {
 
-        IHeap<T> binaryHeap = new BinaryHeap<>();
+        BinaryHeap<T> binaryHeap = new BinaryHeap<>();
         binaryHeap.build(unordered);
-        IHeap<T> cloned = ((BinaryHeap<T>) binaryHeap).clone();
+        IHeap<T> cloned = binaryHeap.clone();
 
         if (unordered == null || unordered.size() == 0)
             return cloned;
@@ -27,6 +27,9 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
 
     @Override
     public void sortSlow(ArrayList<T> unordered) {
+        if (unordered == null || unordered.size() == 0)
+            return;
+        BubbleSort(unordered);
     }
 
     /**
@@ -100,6 +103,19 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
             }
         }
         return merged;
+    }
+
+    private void BubbleSort(List<T> unOrdered)
+    {
+        T[] unSortedArr = unOrdered.toArray((T[]) Array.newInstance(unOrdered.get(0).getClass(), 0));
+
+        for (int i = 0; i < unOrdered.size(); i++)
+            for (int j = 0; j < unOrdered.size() - 1 - i; j++)
+                if (unSortedArr[j].compareTo(unSortedArr[j + 1]) > 0)
+                    swap(unSortedArr, j, j + 1);
+
+        unOrdered.clear();
+        unOrdered.addAll(Arrays.asList(unSortedArr));
     }
 
     private void QuickSort(List<T> unOrdered)
