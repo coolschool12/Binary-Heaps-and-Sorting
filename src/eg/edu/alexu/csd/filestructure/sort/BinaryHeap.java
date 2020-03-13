@@ -103,7 +103,13 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     {
         try {
             IHeap<T> cloned = (IHeap<T>) super.clone();
-            this.nodes = new ArrayList<>(nodes);
+            ArrayList<INode<T>> deepClonedNodes = new ArrayList<>();
+
+            for (INode<T> node : this.nodes) {
+                deepClonedNodes.add(new NodeImp<T>(deepClonedNodes, ((NodeImp<T>)node)));
+            }
+            this.nodes = deepClonedNodes;
+
             return cloned;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
