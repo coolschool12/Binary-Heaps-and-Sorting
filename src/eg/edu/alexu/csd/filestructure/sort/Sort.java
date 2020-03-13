@@ -1,7 +1,10 @@
 package eg.edu.alexu.csd.filestructure.sort;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Sort<T extends Comparable<T>> implements ISort<T> {
     @Override
@@ -14,11 +17,11 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
         if (unordered == null || unordered.size() == 0)
             return cloned;
 
-        unordered.clear();
+       /* unordered.clear();
         while (binaryHeap.size() > 0)
         {
             unordered.add(0, binaryHeap.extract());
-        }
+        }*/
         return cloned;
     }
 
@@ -41,6 +44,7 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
 
         unordered.clear();
         unordered.addAll(sorted);
+        //QuickSort(unordered);
     }
 
     /**
@@ -95,7 +99,47 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
                 }
             }
         }
-
         return merged;
+    }
+
+    private void QuickSort(List<T> unOrdered)
+    {
+        T[] unSortedArr = unOrdered.toArray((T[]) Array.newInstance(unOrdered.get(0).getClass(), 0));
+        randomQuickSort(unSortedArr, 0, unOrdered.size() - 1);
+
+        unOrdered.clear();
+        unOrdered.addAll(Arrays.asList(unSortedArr));
+    }
+
+    private void randomQuickSort(T[] unOrdered, int start, int end)
+    {
+        if (end <= start)
+            return;
+        //Choosing the pivot Randomly
+        Random random = new Random();
+
+        int pivot = random.nextInt(end - start + 1) + start;
+        swap(unOrdered, pivot, end); //having the pivot in the last of the array
+
+        int barrier = start - 1;
+        for (int i = start; i < end; i++)
+        {
+            // if its smaller than the pivot, then  it should be in the left side
+            if (unOrdered[i].compareTo(unOrdered[end]) < 0)
+            {
+                barrier++;
+                swap(unOrdered, barrier, i);
+            }
+        }
+        barrier++;
+        swap(unOrdered, barrier, end);
+        randomQuickSort(unOrdered, start, barrier - 1);
+        randomQuickSort(unOrdered, barrier + 1, end);
+    }
+    private void swap(T [] unOrdered, int ind1, int ind2)
+    {
+        T temp = unOrdered[ind1];
+        unOrdered[ind1] = unOrdered[ind2];
+        unOrdered[ind2] = temp;
     }
 }
