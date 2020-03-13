@@ -1,10 +1,7 @@
 package eg.edu.alexu.csd.filestructure.sort;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Sort<T extends Comparable<T>> implements ISort<T> {
     @Override
@@ -12,17 +9,22 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
 
         BinaryHeap<T> binaryHeap = new BinaryHeap<>();
         binaryHeap.build(unordered);
-        IHeap<T> cloned = binaryHeap.clone();
+        //IHeap<T> cloned = binaryHeap.clone();
 
         if (unordered == null || unordered.size() == 0)
-            return cloned;
+            return binaryHeap;
 
         unordered.clear();
-        while (binaryHeap.size() > 0)
-        {
-            unordered.add(0, binaryHeap.extract());
+        while (binaryHeap.size() > 0) {
+            unordered.add(binaryHeap.extract());
         }
-        return cloned;
+        Collections.reverse(unordered);
+
+        for (T t : unordered) {
+            binaryHeap.insertLast(t);
+        }
+
+        return binaryHeap;
     }
 
     @Override
