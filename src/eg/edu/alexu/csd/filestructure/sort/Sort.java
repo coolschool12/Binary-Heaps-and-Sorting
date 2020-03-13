@@ -17,11 +17,11 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
         if (unordered == null || unordered.size() == 0)
             return cloned;
 
-       /* unordered.clear();
+        unordered.clear();
         while (binaryHeap.size() > 0)
         {
             unordered.add(0, binaryHeap.extract());
-        }*/
+        }
         return cloned;
     }
 

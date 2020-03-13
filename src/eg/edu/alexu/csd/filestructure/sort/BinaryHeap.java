@@ -111,6 +111,10 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         return null;
     }
 
+    public void insertLast(INode<T> node) {
+        this.nodes.add(node);
+    }
+
     private void shiftUp(INode<T> node)
     {
         if (node.getParent() == null)
