@@ -27,7 +27,12 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         this.index = index;
         this.value = value;
     }
-
+    public NodeImp(List<INode<T>> heapList, NodeImp<T> node)
+    {
+        this.heapList = heapList;
+        this.index = node.index;
+        this.value = node.value;
+    }
     /**
      * Returns the left child of the current element/node in the heap tree
      * @return        INode wrapper to the left child of the current element/node
