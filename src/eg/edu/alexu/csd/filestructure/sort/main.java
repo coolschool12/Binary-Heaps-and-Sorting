@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class main {
     public static void main(String[] args)
     {
-        BinaryHeap<Integer> binaryHeap = new BinaryHeap<>();
+      /*  BinaryHeap<Integer> binaryHeap = new BinaryHeap<>();
         ArrayList<Integer> arr = new ArrayList<>();
         arr.add(29);
         arr.add(115);
@@ -15,6 +15,6 @@ public class main {
         arr.add(26);
         arr.add(20);
         binaryHeap.build(arr);
-        binaryHeap.heapSort();
+        binaryHeap.heapSort();*/
     }
 }

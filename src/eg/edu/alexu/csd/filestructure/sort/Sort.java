@@ -7,21 +7,22 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
     @Override
 
     public IHeap<T> heapSort(ArrayList<T> unordered) {
-        IHeap<T> binaryHeap = new BinaryHeap<>();
+        IHeap<T> binaryHeap = new BinaryHeap_2<>();
         binaryHeap.build(unordered);
 
         if (unordered == null || unordered.size() == 0)
             return binaryHeap;
 
-        IHeap<T> cloned = ((BinaryHeap<T>) binaryHeap).clone();
+    //    IHeap<T> cloned = ((BinaryHeap<T>) binaryHeap).clone();
         unordered.clear();
 
         while (binaryHeap.size() > 0) {
-            unordered.add(0, binaryHeap.extract());
+            unordered.add(binaryHeap.extract());
         }
-
-        ((BinaryHeap<T>) cloned).heapSort();
-        return cloned;
+        Collections.reverse(unordered);
+       // ((BinaryHeap<T>) cloned).heapSort();
+        ((BinaryHeap_2<T>)binaryHeap).setSize(unordered.size());
+        return binaryHeap;
     }
 
     @Override

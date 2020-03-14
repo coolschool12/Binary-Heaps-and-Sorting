@@ -1,15 +1,17 @@
-/*package eg.edu.alexu.csd.filestructure.sort;
+package eg.edu.alexu.csd.filestructure.sort;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
+public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
 
     private List<INode<T>> nodes;
+    private long size;
 
-    BinaryHeap(){
+    BinaryHeap_2(){
         nodes = new ArrayList<>();
+        size = 0;
     }
 
     @Override
@@ -23,12 +25,21 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public int size() {
-        return nodes.size();
+        return (int) size;
+    }
+
+    public void setSize(int size)
+    {
+        if (nodes.size() < size)
+            return;
+        this.size = size;
     }
 
     @Override
     public void heapify(INode<T> node) {
-        if (node != null && (node.getLeftChild() != null || node.getRightChild() != null))
+        if (node != null
+                && (node.getLeftChild() != null || node.getRightChild() != null)
+                && ((NodeImp<T>)node).getIndex() < (size() / 2))
         {
             INode<T> child = shiftTest(node.getLeftChild(), node.getRightChild()) ? node.getLeftChild() : node.getRightChild();
 
@@ -39,58 +50,24 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
             }
         }
     }
-
-    private void heapify(INode<T> node, int index, int size) {
-        if (index < size / 2)
-        {
-            INode<T> child;
-
-            if (shiftTest(node.getLeftChild(), node.getRightChild(), (2 * index) + 1, (2 * index) + 2, size))
-            {
-                index = (2 * index) + 1;
-                if (index >= size)
-                {
-                    return;
-                }
-                child = node.getLeftChild();
-            }
-            else
-            {
-                index = (2 * index) + 2;
-                if (index >= size)
-                {
-                    return;
-                }
-
-                child = node.getRightChild();
-            }
-
-            if (child.getValue().compareTo(node.getValue()) > 0)
-            {
-                this.swap(child, node);
-                this.heapify(child, index, size);
-            }
-        }
-    }
-
     @Override
     public T extract() {
         // Empty list
-        if (nodes.size() <= 0)
-        {
+        if (nodes.size() <= 0) {
             return null;
         }
         // One node
-        else if (nodes.size() == 1)
-        {
+        else if (nodes.size() == 1) {
             return nodes.remove(0).getValue();
         }
 
         T extracted = nodes.get(0).getValue();
 
         // Move last node to first position
-        INode<T> node = nodes.remove(nodes.size() - 1);
-        this.nodes.get(0).setValue(node.getValue());
+      //  INode<T> node = nodes.remove(nodes.size() - 1);
+        this.nodes.get(0).setValue(nodes.get(size() - 1).getValue());
+        this.nodes.get(size() - 1).setValue(extracted);
+        setSize(size() - 1);
 
         this.heapify(this.nodes.get(0));
 
@@ -107,6 +84,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         INode<T> node = new NodeImp<>(nodes, nodes.size(), element);
         nodes.add(node);
         shiftUp(node);
+        setSize(size() + 1);
     }
 
     @Override
@@ -115,33 +93,18 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         {
             return;
         }
-
+        nodes.clear();
         for (T t : unordered)
         {
             INode<T> node = new NodeImp<>(nodes, nodes.size(), t);
             nodes.add(node);
         }
-
+        setSize(nodes.size());
         for (int i = (nodes.size() / 2) - 1; i >= 0; i--)
         {
             this.heapify(this.nodes.get(i));
         }
-    }*/
-
-    /**
-     * Heap sort implementation.
-     */
-    /*
-    public void heapSort() {
-        int size = this.nodes.size();
-
-        for (int i = size - 1; i >= 0; i--)
-        {
-            this.swap(nodes.get(i), nodes.get(0));
-            this.heapify(this.nodes.get(0), 0, i);
-        }
     }
-
     @Override
     public IHeap<T> clone()
     {
@@ -173,20 +136,11 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         }
     }
 
-    private boolean shiftTest(INode<T> fNode, INode<T> nNode, int ind1, int ind2, int size)
-    {
-        if (fNode == null || ind1 >= size)
-            return false;
-        else if (nNode == null || ind2 >= size)
-            return true;
-        return fNode.getValue().compareTo(nNode.getValue()) > 0;
-    }
-
     private boolean shiftTest(INode<T> fNode, INode<T> nNode)
     {
-        if (fNode == null)
+        if (fNode == null || ((NodeImp<T>)fNode).getIndex() >= size())
             return false;
-        else if (nNode == null)
+        else if (nNode == null || ((NodeImp<T>) nNode).getIndex() >= size())
             return true;
         return fNode.getValue().compareTo(nNode.getValue()) > 0;
     }
@@ -198,4 +152,3 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         nNode.setValue(comparable);
     }
 }
-*/
