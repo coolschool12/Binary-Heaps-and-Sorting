@@ -1,9 +1,9 @@
-//package eg.edu.alexu.csd.filestructure.sort;
+package eg.edu.alexu.csd.filestructure.sort;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-/*
+
 public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     private List<T> values;
@@ -98,7 +98,6 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public void insert(T element) {
-
         if (element == null) {
             return;
         }
@@ -123,17 +122,14 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
             this.heapify(new NodeImp<>(this.values, this, i));
         }
     }
-*/
 
-    /**
-     * Heap sort implementation.
-     */
-/*    public void heapSort() {
+    public void heapSort() {
         int size = this.values.size();
 
         for (int i = size - 1; i >= 0; i--)
         {
-            this.swap(new NodeImp<>(this.values,this,  i), new NodeImp<>(this.values,this, 0));
+            this.swap(i, 0);
+            //this.swap(new NodeImp<>(this.values,this,  i), new NodeImp<>(this.values,this, 0));
             this.heapify(new NodeImp<>(this.values,this, 0), 0, i);
         }
     }
@@ -188,5 +184,11 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         fNode.setValue(nNode.getValue());
         nNode.setValue(comparable);
     }
+
+    private void swap(int fNode, int nNode)
+    {
+        T comparable = values.get(fNode);
+        values.set(fNode, values.get(nNode));
+        values.set(nNode, comparable);
+    }
 }
-*/

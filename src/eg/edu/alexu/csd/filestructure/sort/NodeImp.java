@@ -1,7 +1,5 @@
 package eg.edu.alexu.csd.filestructure.sort;
 
-import org.junit.Ignore;
-
 import java.util.List;
 
 public class NodeImp<T extends Comparable<T>> implements INode<T> {
@@ -40,12 +38,14 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         {
             return null;
         }
-        if (left != null) {
-            left.setValue(heapList.get(leftIndex));
+        if (left == null)
+        {
+            return left = new NodeImp<>(this.heapList, heap,leftIndex);
+        }
+        else
+        {
             return left;
         }
-
-        return left = new NodeImp<>(this.heapList, heap,leftIndex);
     }
 
     /**
@@ -60,11 +60,14 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         {
             return null;
         }
-        if (right != null) {
-            right.setValue(this.heapList.get(rightIndex));
+        else if (right == null)
+        {
+            return right = new NodeImp<>(this.heapList, heap, rightIndex);
+        }
+        else
+        {
             return right;
         }
-        return right = new NodeImp<>(this.heapList, heap, rightIndex);
     }
 
     /**
@@ -77,12 +80,13 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         {
             return null;
         }
-        if (parent != null){
-            parent.setValue(this.heapList.get((this.index- 1) / 2));
+        else if (parent == null){
+            return parent = new NodeImp<>(this.heapList, heap, (this.index - 1) / 2);
+        }
+        else
+        {
             return parent;
         }
-
-        return parent = new NodeImp<>(this.heapList, heap, (this.index - 1) / 2);
     }
 
     /**
