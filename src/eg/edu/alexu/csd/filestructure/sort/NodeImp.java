@@ -21,8 +21,7 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
      * @param index index of the node.
      */
     public NodeImp(List<INode<T>> heapList, int index, T value) throws IllegalArgumentException {
-        if (heapList == null)
-        {
+        if (heapList == null) {
             throw new IllegalArgumentException("null array");
         }
         else if (index < 0)
