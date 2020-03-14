@@ -16,7 +16,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public INode<T> getRoot() {
-        if (nodes.size() <= 0)
+        if (size() <= 0)
         {
             return null;
         }
@@ -37,8 +37,8 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
 
     @Override
     public void heapify(INode<T> node) {
-        if (node != null
-                && (node.getLeftChild() != null || node.getRightChild() != null)
+
+        while ((node.getLeftChild() != null || node.getRightChild() != null)
                 && ((NodeImp<T>)node).getIndex() < (size() / 2))
         {
             INode<T> child = shiftTest(node.getLeftChild(), node.getRightChild()) ? node.getLeftChild() : node.getRightChild();
@@ -46,19 +46,20 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
             if (child.getValue().compareTo(node.getValue()) > 0)
             {
                 swap(child, node);
-                heapify(child);
+                node = child;
             }
         }
     }
     @Override
     public T extract() {
         // Empty list
-        if (nodes.size() <= 0) {
+        if (size() <= 0) {
             return null;
         }
         // One node
-        else if (nodes.size() == 1) {
-            return nodes.remove(0).getValue();
+        else if (size() == 1) {
+            setSize(size() - 1);
+            return nodes.get(0).getValue();
         }
 
         T extracted = nodes.get(0).getValue();
@@ -81,10 +82,16 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
             return;
         }
 
-        INode<T> node = new NodeImp<>(nodes, nodes.size(), element);
-        nodes.add(node);
-        shiftUp(node);
+        INode<T> node = new NodeImp<>(nodes, size(), element);
+
+        nodes.add(size(),node);
+        /*for (int i = size(); i < nodes.size(); i++)
+        {
+            ((NodeImp<T>)this.nodes.get(i)).setIndex(i);
+        }*/
         setSize(size() + 1);
+        shiftUp(node);
+
     }
 
     @Override
@@ -113,7 +120,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
             ArrayList<INode<T>> deepClonedNodes = new ArrayList<>();
 
             for (INode<T> node : this.nodes) {
-                deepClonedNodes.add(new NodeImp<T>(deepClonedNodes, ((NodeImp<T>)node)));
+                deepClonedNodes.add(new NodeImp<>(deepClonedNodes, ((NodeImp<T>) node)));
             }
             this.nodes = deepClonedNodes;
 
@@ -126,13 +133,14 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
 
     private void shiftUp(INode<T> node)
     {
-        if (node.getParent() == null)
-            return;
+        while (node != null) {
+            if (node.getParent() == null)
+                return;
 
-        if (shiftTest(node, node.getParent()))
-        {
-            swap(node, node.getParent());
-            shiftUp(node.getParent());
+            if (shiftTest(node, node.getParent())) {
+                swap(node, node.getParent());
+                node = node.getParent();
+            }
         }
     }
 

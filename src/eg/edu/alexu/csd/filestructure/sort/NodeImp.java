@@ -88,6 +88,10 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         return this.value;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     /**
      * Set the value of the current node
      */
