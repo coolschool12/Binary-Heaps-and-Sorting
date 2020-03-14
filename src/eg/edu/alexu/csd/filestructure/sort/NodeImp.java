@@ -5,13 +5,13 @@ import java.util.List;
 public class NodeImp<T extends Comparable<T>> implements INode<T> {
     private List<T> heapList;
     private int index;
-
+    private IHeap<T> heap;
     /**
      * Node constructor.
      * @param heapList a reference to the array containing the node.
      * @param index index of the node.
      */
-    public NodeImp(List<T> heapList, int index) throws IllegalArgumentException {
+    public NodeImp(List<T> heapList, IHeap<T> heap,int index) throws IllegalArgumentException {
         if (heapList == null)
         {
             throw new IllegalArgumentException("null array");
@@ -21,12 +21,14 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
             throw new IllegalArgumentException("invalid index");
         }
 
+        this.heap = heap;
         this.heapList = heapList;
         this.index = index;
     }
 
     public NodeImp(List<T> heapList, NodeImp<T> node)
     {
+        this.heap = node.heap;
         this.heapList = heapList;
         this.index = node.index;
     }
@@ -38,12 +40,12 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
     public INode<T> getLeftChild() {
         int leftIndex = (2 * index) + 1;
 
-        if (leftIndex >= heapList.size())
+        if (leftIndex >= heap.size())
         {
             return null;
         }
 
-        return new NodeImp<>(this.heapList, leftIndex);
+        return new NodeImp<>(this.heapList, this.heap ,leftIndex);
     }
 
     /**
@@ -54,12 +56,12 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
     public INode<T> getRightChild() {
         int rightIndex = (2 * index) + 2;
 
-        if (rightIndex >= heapList.size())
+        if (rightIndex >= heap.size())
         {
             return null;
         }
 
-        return new NodeImp<>(this.heapList, rightIndex);
+        return new NodeImp<>(this.heapList, this.heap ,rightIndex);
     }
 
     /**
@@ -73,7 +75,7 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
             return null;
         }
 
-        return new NodeImp<>(this.heapList, (this.index - 1) / 2);
+        return new NodeImp<>(this.heapList,this.heap, (this.index - 1) / 2);
     }
 
     /**
