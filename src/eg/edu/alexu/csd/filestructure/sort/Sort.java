@@ -13,12 +13,13 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
         if (unordered == null || unordered.size() == 0)
             return binaryHeap;
 
-        unordered.clear();
+        //unordered.clear();
+        ((BinaryHeap_2<T>)binaryHeap).setSorted(true);
 
         while (binaryHeap.size() > 0) {
-            unordered.add(binaryHeap.extract());
+            binaryHeap.extract();
         }
-        Collections.reverse(unordered);
+        //Collections.reverse(unordered);
         ((BinaryHeap_2<T>)binaryHeap).setSize(unordered.size());
 
         return binaryHeap;
@@ -42,11 +43,12 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
             return;
         }
 
-        List<T> sorted = this.mergeSort(unordered);
+        /*List<T> sorted = this.mergeSort(unordered);
 
         unordered.clear();
-        unordered.addAll(sorted);
-        //QuickSort(unordered);
+        unordered.addAll(sorted);*/
+        QuickSort(unordered);
+       // Collections.sort(unordered);
     }
     /**
      * implement merge sort
@@ -118,6 +120,9 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
 
     private void QuickSort(List<T> unOrdered)
     {
+        if (unOrdered == null || unOrdered.size() <= 1)
+            return;
+
         T[] unSortedArr = unOrdered.toArray((T[]) Array.newInstance(unOrdered.get(0).getClass(), 0));
         randomQuickSort(unSortedArr, 0, unOrdered.size() - 1);
 
