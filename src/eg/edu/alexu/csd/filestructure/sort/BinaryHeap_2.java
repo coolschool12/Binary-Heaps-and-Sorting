@@ -20,7 +20,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         {
             return null;
         }
-        return new NodeImp<T>(this.nodes, this, 0);
+        return new NodeImp<T>(this.nodes, 0);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
     @Override
     public void heapify(INode<T> node) {
 
-        while ((node.getLeftChild() != null || node.getRightChild() != null)
+        while (node != null && (node.getLeftChild() != null || node.getRightChild() != null)
                 && ((NodeImp<T>)node).getIndex() < (size() / 2))
         {
             INode<T> child = shiftTest(node.getLeftChild(), node.getRightChild()) ? node.getLeftChild() : node.getRightChild();
@@ -48,8 +48,13 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
                 swap(child, node);
                 node = child;
             }
+            else
+            {
+                return;
+            }
         }
     }
+
     @Override
     public T extract() {
         // Empty list
@@ -70,7 +75,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         this.nodes.set(size() - 1, extracted);
         setSize(size() - 1);
 
-        this.heapify(new NodeImp<>(this.nodes, this, 0));
+        this.heapify(new NodeImp<>(this.nodes, 0));
 
         return extracted;
     }
@@ -107,7 +112,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         setSize(nodes.size());
         for (int i = (nodes.size() / 2) - 1; i >= 0; i--)
         {
-            this.heapify(new NodeImp<>(this.nodes, this, i));
+            this.heapify(new NodeImp<>(this.nodes, i));
         }
     }
     @Override
@@ -132,6 +137,10 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
                 swap(node, parentNode);
                 node = parentNode;
             }
+            else
+            {
+                return;
+            }
         }
     }
 
@@ -150,6 +159,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         fNode.setValue(nNode.getValue());
         nNode.setValue(comparable);
     }
+
     private boolean shiftTest(int fNode, int  nNode)
     {
         if (fNode >= size())
