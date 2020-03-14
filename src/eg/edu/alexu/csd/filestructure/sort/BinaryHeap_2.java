@@ -6,7 +6,7 @@ import java.util.List;
 
 public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
 
-    private List<INode<T>> nodes;
+    private List<T> nodes;
     private long size;
 
     BinaryHeap_2(){
@@ -20,7 +20,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         {
             return null;
         }
-        return nodes.get(0);
+        return new NodeImp<T>(this.nodes, this, 0,nodes.get(0));
     }
 
     @Override
@@ -59,18 +59,18 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         // One node
         else if (size() == 1) {
             setSize(size() - 1);
-            return nodes.get(0).getValue();
+            return nodes.get(0);
         }
 
-        T extracted = nodes.get(0).getValue();
+        T extracted = nodes.get(0);
 
         // Move last node to first position
       //  INode<T> node = nodes.remove(nodes.size() - 1);
-        this.nodes.get(0).setValue(nodes.get(size() - 1).getValue());
-        this.nodes.get(size() - 1).setValue(extracted);
+        this.nodes.set(0, this.nodes.get(size() - 1));
+        this.nodes.set(size() - 1, extracted);
         setSize(size() - 1);
 
-        this.heapify(this.nodes.get(0));
+        this.heapify(new NodeImp<>(this.nodes, this, 0,this.nodes.get(0)));
 
         return extracted;
     }
@@ -82,15 +82,15 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
             return;
         }
 
-        INode<T> node = new NodeImp<>(nodes, size(), element);
+        //INode<T> node = new NodeImp<>(nodes, this, size(), element);
 
-        nodes.add(size(),node);
+        nodes.add(size(), element);
         /*for (int i = size(); i < nodes.size(); i++)
         {
             ((NodeImp<T>)this.nodes.get(i)).setIndex(i);
         }*/
         setSize(size() + 1);
-        shiftUp(node);
+        shiftUp(size() - 1);
 
     }
 
@@ -101,15 +101,13 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
             return;
         }
         nodes.clear();
-        for (T t : unordered)
-        {
-            INode<T> node = new NodeImp<>(nodes, nodes.size(), t);
-            nodes.add(node);
-        }
+        // INode<T> node = new NodeImp<>(nodes, this,nodes.size(), t);
+        nodes.addAll(unordered);
+
         setSize(nodes.size());
         for (int i = (nodes.size() / 2) - 1; i >= 0; i--)
         {
-            this.heapify(this.nodes.get(i));
+            this.heapify(new NodeImp<>(this.nodes, this, i, this.nodes.get(i)));
         }
     }
     @Override
@@ -117,13 +115,8 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
     {
         try {
             IHeap<T> cloned = (IHeap<T>) super.clone();
-            ArrayList<INode<T>> deepClonedNodes = new ArrayList<>();
-
-            for (INode<T> node : this.nodes) {
-                deepClonedNodes.add(new NodeImp<>(deepClonedNodes, ((NodeImp<T>) node)));
-            }
+            ArrayList<T> deepClonedNodes = new ArrayList<>(this.nodes);
             this.nodes = deepClonedNodes;
-
             return cloned;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -131,15 +124,13 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         return null;
     }
 
-    private void shiftUp(INode<T> node)
+    private void shiftUp(int node)
     {
-        while (node != null) {
-            if (node.getParent() == null)
-                return;
-
-            if (shiftTest(node, node.getParent())) {
-                swap(node, node.getParent());
-                node = node.getParent();
+        while (node > 0) {
+            int parentNode = (node - 1) / 2;
+            if (shiftTest(node, parentNode)) {
+                swap(node, parentNode);
+                node = parentNode;
             }
         }
     }
@@ -158,5 +149,20 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         T comparable = fNode.getValue();
         fNode.setValue(nNode.getValue());
         nNode.setValue(comparable);
+    }
+    private boolean shiftTest(int fNode, int  nNode)
+    {
+        if (fNode >= size())
+            return false;
+        else if (nNode >= size())
+            return true;
+        return nodes.get(fNode).compareTo(nodes.get(nNode)) > 0;
+    }
+
+    private void swap(int fNode, int nNode)
+    {
+        T comparable = nodes.get(fNode);
+        nodes.set(fNode, nodes.get(nNode));
+        nodes.set(nNode, comparable);
     }
 }

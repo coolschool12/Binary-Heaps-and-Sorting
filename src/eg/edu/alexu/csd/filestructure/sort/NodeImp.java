@@ -3,9 +3,9 @@ package eg.edu.alexu.csd.filestructure.sort;
 import java.util.List;
 
 public class NodeImp<T extends Comparable<T>> implements INode<T> {
-    private List<INode<T>> heapList;
+    private List<T> heapList;
     private int index;
-
+    private IHeap<T> heap;
     private T value;
 
     /**
@@ -13,8 +13,9 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
      * @param heapList a reference to the array containing the node.
      * @param index index of the node.
      */
-    public NodeImp(List<INode<T>> heapList, int index, T value) throws IllegalArgumentException {
-        if (heapList == null) {
+    public NodeImp(List<T> heapList, IHeap<T> binaryHeap ,int index, T value) throws IllegalArgumentException {
+        if (heapList == null || binaryHeap == null)
+        {
             throw new IllegalArgumentException("null array");
         }
         else if (index < 0)
@@ -25,12 +26,14 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         this.heapList = heapList;
         this.index = index;
         this.value = value;
+        this.heap = binaryHeap;
     }
-    public NodeImp(List<INode<T>> heapList, NodeImp<T> node)
+    public NodeImp(List<T> heapList, NodeImp<T> node)
     {
         this.heapList = heapList;
         this.index = node.index;
         this.value = node.value;
+        this.heap = node.heap;
     }
     /**
      * Returns the left child of the current element/node in the heap tree
@@ -40,12 +43,12 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
     public INode<T> getLeftChild() {
         int leftIndex = (2 * index) + 1;
 
-        if (leftIndex >= heapList.size())
+        if (leftIndex >= heap.size())
         {
             return null;
         }
 
-        return this.heapList.get(leftIndex);
+        return new NodeImp<>(this.heapList, this.heap, leftIndex, this.heapList.get(leftIndex));
     }
 
     /**
@@ -61,7 +64,7 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
             return null;
         }
 
-        return this.heapList.get(rightIndex);
+        return new NodeImp<>(this.heapList, this.heap, rightIndex, this.heapList.get(rightIndex));
     }
 
     /**
@@ -74,8 +77,9 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         {
             return null;
         }
+        int parentInd = (this.index - 1) / 2;
+        return new NodeImp<>(this.heapList, this.heap, parentInd, this.heapList.get(parentInd));
 
-        return this.heapList.get((this.index - 1) / 2);
     }
 
     /**
@@ -87,15 +91,12 @@ public class NodeImp<T extends Comparable<T>> implements INode<T> {
         return this.value;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
     /**
      * Set the value of the current node
      */
     @Override
     public void setValue(T value) {
+        this.heapList.set(this.index, value);
         this.value = value;
     }
 
