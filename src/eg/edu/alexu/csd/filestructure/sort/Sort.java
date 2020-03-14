@@ -13,15 +13,14 @@ public class Sort<T extends Comparable<T>> implements ISort<T> {
         if (unordered == null || unordered.size() == 0)
             return binaryHeap;
 
-    //  IHeap<T> cloned = ((BinaryHeap<T>) binaryHeap).clone();
-        //unordered.clear();
-        ((BinaryHeap_2<T>) binaryHeap).setSorting(true);
+        unordered.clear();
+
         while (binaryHeap.size() > 0) {
-            binaryHeap.extract();
+            unordered.add(binaryHeap.extract());
         }
-     //   Collections.reverse(unordered);
-       // ((BinaryHeap<T>) cloned).heapSort();
+        Collections.reverse(unordered);
         ((BinaryHeap_2<T>)binaryHeap).setSize(unordered.size());
+
         return binaryHeap;
     }
 
