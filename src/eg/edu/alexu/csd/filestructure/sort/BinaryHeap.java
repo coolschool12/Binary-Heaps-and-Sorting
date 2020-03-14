@@ -1,4 +1,4 @@
-/*package eg.edu.alexu.csd.filestructure.sort;
+package eg.edu.alexu.csd.filestructure.sort;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,24 +6,25 @@ import java.util.List;
 
 public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
-    private List<INode<T>> nodes;
+    private List<T> values;
 
     BinaryHeap(){
-        nodes = new ArrayList<>();
+        values = new ArrayList<>();
     }
 
     @Override
     public INode<T> getRoot() {
-        if (nodes.size() <= 0)
+        if (values.size() <= 0)
         {
             return null;
         }
-        return nodes.get(0);
+
+        return new NodeImp<>(this.values, 0);
     }
 
     @Override
     public int size() {
-        return nodes.size();
+        return this.values.size();
     }
 
     @Override
@@ -76,23 +77,21 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     @Override
     public T extract() {
         // Empty list
-        if (nodes.size() <= 0)
+        if (this.values.size() <= 0)
         {
             return null;
         }
         // One node
-        else if (nodes.size() == 1)
+        else if (this.values.size() == 1)
         {
-            return nodes.remove(0).getValue();
+            return this.values.remove(0);
         }
 
-        T extracted = nodes.get(0).getValue();
+        T extracted = this.values.get(0);
 
-        // Move last node to first position
-        INode<T> node = nodes.remove(nodes.size() - 1);
-        this.nodes.get(0).setValue(node.getValue());
-
-        this.heapify(this.nodes.get(0));
+        // Swap last and first nodes
+        this.values.set(0, values.remove(values.size() - 1));
+        this.heapify(this.getRoot());
 
         return extracted;
     }
@@ -104,9 +103,10 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
             return;
         }
 
-        INode<T> node = new NodeImp<>(nodes, nodes.size(), element);
-        nodes.add(node);
-        shiftUp(node);
+        this.values.add(element);
+
+        INode<T> nodeToShift = new NodeImp<>(this.values, this.values.size());
+        shiftUp(nodeToShift);
     }
 
     @Override
@@ -116,29 +116,24 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
             return;
         }
 
-        for (T t : unordered)
-        {
-            INode<T> node = new NodeImp<>(nodes, nodes.size(), t);
-            nodes.add(node);
-        }
+        this.values = new ArrayList<>(unordered);
 
-        for (int i = (nodes.size() / 2) - 1; i >= 0; i--)
+        for (int i = (values.size() / 2) - 1; i >= 0; i--)
         {
-            this.heapify(this.nodes.get(i));
+            this.heapify(new NodeImp<>(this.values, i));
         }
-    }*/
+    }
 
     /**
      * Heap sort implementation.
      */
-    /*
     public void heapSort() {
-        int size = this.nodes.size();
+        int size = this.values.size();
 
         for (int i = size - 1; i >= 0; i--)
         {
-            this.swap(nodes.get(i), nodes.get(0));
-            this.heapify(this.nodes.get(0), 0, i);
+            this.swap(new NodeImp<>(this.values, i), new NodeImp<>(this.values, 0));
+            this.heapify(new NodeImp<>(this.values, 0), 0, i);
         }
     }
 
@@ -146,13 +141,8 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
     public IHeap<T> clone()
     {
         try {
-            IHeap<T> cloned = (IHeap<T>) super.clone();
-            ArrayList<INode<T>> deepClonedNodes = new ArrayList<>();
-
-            for (INode<T> node : this.nodes) {
-                deepClonedNodes.add(new NodeImp<T>(deepClonedNodes, ((NodeImp<T>)node)));
-            }
-            this.nodes = deepClonedNodes;
+            BinaryHeap<T> cloned = (BinaryHeap<T>) super.clone();
+            cloned.values = new ArrayList<>(this.values);
 
             return cloned;
         } catch (CloneNotSupportedException e) {
@@ -198,4 +188,3 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
         nNode.setValue(comparable);
     }
 }
-*/
