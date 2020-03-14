@@ -20,7 +20,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         {
             return null;
         }
-        return new NodeImp<T>(this.nodes, this, 0,nodes.get(0));
+        return new NodeImp<T>(this.nodes, this, 0);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         this.nodes.set(size() - 1, extracted);
         setSize(size() - 1);
 
-        this.heapify(new NodeImp<>(this.nodes, this, 0,this.nodes.get(0)));
+        this.heapify(new NodeImp<>(this.nodes, this, 0));
 
         return extracted;
     }
@@ -107,7 +107,7 @@ public class BinaryHeap_2<T extends Comparable<T>> implements IHeap<T>{
         setSize(nodes.size());
         for (int i = (nodes.size() / 2) - 1; i >= 0; i--)
         {
-            this.heapify(new NodeImp<>(this.nodes, this, i, this.nodes.get(i)));
+            this.heapify(new NodeImp<>(this.nodes, this, i));
         }
     }
     @Override

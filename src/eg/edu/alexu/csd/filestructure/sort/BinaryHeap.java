@@ -19,7 +19,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
             return null;
         }
 
-        return new NodeImp<>(this.values, 0);
+        return new NodeImp<>(this.values, this,0);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
         this.values.add(element);
 
-        INode<T> nodeToShift = new NodeImp<>(this.values, this.values.size());
+        INode<T> nodeToShift = new NodeImp<>(this.values, this ,this.values.size());
         shiftUp(nodeToShift);
     }
 
@@ -120,7 +120,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
         for (int i = (values.size() / 2) - 1; i >= 0; i--)
         {
-            this.heapify(new NodeImp<>(this.values, i));
+            this.heapify(new NodeImp<>(this.values, this, i));
         }
     }
 
@@ -132,8 +132,8 @@ public class BinaryHeap<T extends Comparable<T>> implements IHeap<T>{
 
         for (int i = size - 1; i >= 0; i--)
         {
-            this.swap(new NodeImp<>(this.values, i), new NodeImp<>(this.values, 0));
-            this.heapify(new NodeImp<>(this.values, 0), 0, i);
+            this.swap(new NodeImp<>(this.values, this, i), new NodeImp<>(this.values, this, 0));
+            this.heapify(new NodeImp<>(this.values, this, 0), 0, i);
         }
     }
 
